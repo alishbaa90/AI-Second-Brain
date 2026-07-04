@@ -27,7 +27,7 @@ export default function SearchPage() {
       .then((data) => {
         if (data.projects?.length > 0) setProjects(data.projects);
       })
-      .catch((err) => console.error('Projects load nahi hue:', err));
+      .catch((err) => console.error('Projects did not load:', err));
   }, []);
 
   async function handleSearch() {

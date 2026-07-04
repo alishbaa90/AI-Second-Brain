@@ -6,6 +6,7 @@ import { addToSession, getSession } from './redis';
 // Step A: Define the State Schema — This is the shared memory accessible by every node in the graph
 const AgentState = Annotation.Root({
   projectId: Annotation<string>,
+  userId: Annotation<string>,
   userMessage: Annotation<string>,
   needsSearch: Annotation<boolean>,
   recentSession: Annotation<{ role: string; content: string }[]>,
@@ -33,13 +34,13 @@ function routerNode(state: State): Partial<State> {
 
 // Step C: Retriever Node — Executes deep vector search on Postgres only if triggered by the router
 async function retrieverNode(state: State): Promise<Partial<State>> {
-  const deepMemories = await searchMemory(state.projectId, state.userMessage, 5);
+  const deepMemories = await searchMemory(state.userId, state.projectId, state.userMessage, 5);
   return { deepMemories };
 }
 
 // Step D: Session Node — Retrieves low-latency short-term session data from Redis (always executes)
 async function sessionNode(state: State): Promise<Partial<State>> {
-  const recentSession = await getSession(state.projectId);
+  const recentSession = await getSession(state.userId, state.projectId);
   return { recentSession };
 }
 
@@ -56,13 +57,11 @@ async function responderNode(state: State): Promise<Partial<State>> {
 
 // Step F: Memory Writer Node — Persists transaction transcripts across both volatile cache and persistent database tiers
 async function memoryWriterNode(state: State): Promise<Partial<State>> {
-  // Save current incoming user message
-  await addToSession(state.projectId, { role: 'user', content: state.userMessage });
-  await saveMessage(state.projectId, 'user', state.userMessage);
+  await addToSession(state.userId, state.projectId, { role: 'user', content: state.userMessage });
+  await saveMessage(state.userId, state.projectId, 'user', state.userMessage);
 
-  // Save generated agent response
-  await addToSession(state.projectId, { role: 'assistant', content: state.reply });
-  await saveMessage(state.projectId, 'assistant', state.reply);
+  await addToSession(state.userId, state.projectId, { role: 'assistant', content: state.reply });
+  await saveMessage(state.userId, state.projectId, 'assistant', state.reply);
 
   return {};
 }

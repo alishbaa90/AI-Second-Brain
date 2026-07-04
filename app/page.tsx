@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
 
 type Message = {
   id?: string;
@@ -27,8 +28,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState<string[]>([]);
 
-  // Zaroori fix: currentProject ab SEEDHA URL se initialize hota hai (lazy state),
-  // 'general' pe pehle set ho kar baad mein switch nahi hota — isse race condition khatam
   const [currentProject, setCurrentProject] = useState<string>(getInitialProject);
 
   const [newProjectName, setNewProjectName] = useState('');
@@ -48,11 +47,10 @@ export default function Home() {
       .catch((err) => console.error('Projects load nahi hue:', err));
   }, []);
 
-  // Jab bhi project badle, us project ki history load karo — race-guard ke sath
   useEffect(() => {
     if (!currentProject) return;
 
-    let ignore = false; // agar ye effect dobara chal jaye is se pehle ke purana request khatam ho, purane ko ignore karo
+    let ignore = false; 
 
     fetch(`/api/messages?projectId=${encodeURIComponent(currentProject)}`)
       .then((res) => res.json())
@@ -68,7 +66,6 @@ export default function Home() {
     };
   }, [currentProject]);
 
-  // Messages load/update hone ke baad: highlight wale message tak scroll karo, ya bottom tak
   useEffect(() => {
     if (messages.length === 0) return;
 
@@ -85,8 +82,8 @@ export default function Home() {
             el.style.background = '';
           }, 2000);
         }
-        highlightIdRef.current = null; // sirf ek baar highlight karo
-        window.history.replaceState({}, '', '/'); // URL clean karo taake project switch pe dobara highlight na ho
+        highlightIdRef.current = null; 
+        window.history.replaceState({}, '', '/'); 
       }, 400);
     } else {
       if (chatBoxRef.current) {
@@ -155,9 +152,13 @@ export default function Home() {
     setNewProjectName('');
   }
 
+  async function handleLogout() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  window.location.href = '/login';
+}
+
   return (
-    // Zaroori fix: yahan se backgroundColor: '#ffffff' hata diya — ab sides pe
-    // global dark background dikhega, bilkul search page jaisa
     <div
       style={{
         height: '100vh',
@@ -174,7 +175,7 @@ export default function Home() {
           padding: '2rem 2rem 1.5rem 2rem',
           fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           color: '#0f172a',
-          backgroundColor: '#ffffff', // sirf is box ka background white hai, poori window ka nahi
+          backgroundColor: '#ffffff', 
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -202,21 +203,40 @@ export default function Home() {
             </p>
           </div>
 
-          <Link
-            href="/search"
-            style={{
-              fontSize: '0.85rem',
-              fontWeight: '500',
-              color: '#0f172a',
-              textDecoration: 'none',
-              padding: '0.5rem 0.85rem',
-              borderRadius: '6px',
-              border: '1px solid #e2e8f0',
-              backgroundColor: '#f8fafc',
-            }}
-          >
-            Search Memory
-          </Link>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+  <Link
+    href="/search"
+    style={{
+      fontSize: '0.85rem',
+      fontWeight: '500',
+      color: '#0f172a',
+      textDecoration: 'none',
+      padding: '0.5rem 0.85rem',
+      borderRadius: '6px',
+      border: '1px solid #e2e8f0',
+      backgroundColor: '#f8fafc',
+    }}
+  >
+    Search Memory
+  </Link>
+
+  <button
+    onClick={handleLogout}
+    style={{
+      fontSize: '0.85rem',
+      fontWeight: '500',
+      padding: '0.5rem 0.85rem',
+      borderRadius: '6px',
+      border: '1px solid #e2e8f0',
+      background: '#f8fafc',
+      cursor: 'pointer',
+    }}
+  >
+    Logout
+  </button>
+</div>
+
+          
         </div>
 
         {/* Project Selector */}

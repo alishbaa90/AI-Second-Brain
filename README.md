@@ -1,4 +1,4 @@
-# 🧠 AI Second Brain
+# 🧠 AI Second Brain for Developers
 
 A full-stack, production-grade personal AI memory system for developers. It remembers conversations, stores project context, and lets you search past decisions using natural language — answering questions like "What did we decide about the database schema last week?"
 

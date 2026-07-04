@@ -8,14 +8,15 @@ Built as a hands-on exploration of Retrieval-Augmented Generation (RAG), agentic
 
 ## ✨ Features
 
+## 🚀 Key Features
 
-* **🧠 Long-term memory (RAG) — every conversation is embedded and stored in a vector database; relevant past context is automatically retrieved and injected into new conversations using semantic (meaning-based) search, not just keyword matching.
-* **⚡ Short-term memory (Redis) — the last few messages of each session are cached in Redis for fast, low-latency conversational context, separate from the permanent long-term store.
-* **🤖 Agentic routing (LangGraph) — a graph-based agent decides, per message, whether deep memory search is actually needed (e.g. "what did we decide?") or whether a direct reply is enough (e.g. "tell me a joke") — avoiding irrelevant context pollution.
-* **📁 Multi-project workspaces — conversations and memory are scoped per project, so context from one project never leaks into another.
-* **🔍 Dedicated memory search — a standalone search interface with similarity scoring, letting you jump directly from a search result to its exact point in the original conversation.
-* **🔒 Multi-user authentication — full auth flow via Supabase Auth, with Row Level Security (RLS) enforced at the database level so each user's data is isolated even if application code has a bug.
-* **☁️ Deployed & production-ready — live on Vercel with Supabase (Postgres + pgvector) and Upstash (Redis) as managed cloud services.
+* **🧠 Long-Term Memory (RAG)** — Every conversation is embedded and stored in a vector database. Relevant past context is automatically retrieved and injected into new conversations using semantic (meaning-based) search rather than just rigid keyword matching.
+* **⚡ Short-Term Memory (Redis)** — The last few messages of each active session are cached in Redis for fast, low-latency conversational continuity, completely isolated from the permanent long-term store.
+* **🤖 Agentic Routing (LangGraph)** — A graph-based LLM agent evaluates each incoming message to dynamically decide whether a deep memory search is required (e.g., *"What did we decide?"*) or if a direct reply suffices (e.g., *"Tell me a joke"*), avoiding unnecessary context pollution.
+* **📁 Multi-Project Workspaces** — Chats, details, and vector memories are strictly scoped per project ecosystem, ensuring context from one project never leaks into another.
+* **🔍 Dedicated Memory Search** — A standalone search interface featuring real-time similarity scoring, allowing you to easily locate historical records and jump straight to their points of origin.
+* **🔒 Multi-User Authentication** — Secure user infrastructure powered by Supabase Auth, protected by strict Row Level Security (RLS) policies enforced directly at the database layer for bulletproof isolation.
+* **☁️ Deployed & Production-Ready** — Live on Vercel utilizing managed cloud backends including Supabase (Postgres + `pgvector`) and Upstash (Redis).
 
 ## 🛠️ Tech Stack
 
@@ -32,12 +33,12 @@ Built as a hands-on exploration of Retrieval-Augmented Generation (RAG), agentic
 
 ## 📚 What This Project Demonstrates
 
-* **Generating and storing vector embeddings for semantic search
-* **Implementing RAG (Retrieval-Augmented Generation) from scratch, without a managed framework abstraction
+* Generating and storing vector embeddings for semantic search
+* Implementing RAG (Retrieval-Augmented Generation) from scratch, without a managed framework abstraction
 * **Designing hybrid memory architectures (short-term + long-term)
-* **Building conditional, stateful agent graphs with LangGraph
-* **Context engineering — deciding what, how much, and where to inject retrieved context into a prompt
-* **Database-level multi-tenant security using Row Level Security (RLS)
+* Building conditional, stateful agent graphs with LangGraph
+* Context engineering — deciding what, how much, and where to inject retrieved context into a prompt
+* Database-level multi-tenant security using Row Level Security (RLS)
 
 
 ## 🚀 Getting Started
@@ -124,10 +125,10 @@ Deploy
 
 ## 🔮 Future Improvements
 
-* **LLM-based (rather than keyword-based) routing for the memory-search decision
-* **Configurable similarity threshold per project
-* **Export/import project memory
-* **Support for file/document ingestion into memory
+* LLM-based (rather than keyword-based) routing for the memory-search decision
+* Configurable similarity threshold per project
+* Export/import project memory
+* Support for file/document ingestion into memory
 
 
 ## 📄 License

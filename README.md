@@ -6,8 +6,6 @@ Built as a hands-on exploration of Retrieval-Augmented Generation (RAG), agentic
 
 ---
 
-## ✨ Features
-
 ## 🚀 Key Features
 
 * **🧠 Long-Term Memory (RAG)** — Every conversation is embedded and stored in a vector database. Relevant past context is automatically retrieved and injected into new conversations using semantic (meaning-based) search rather than just rigid keyword matching.

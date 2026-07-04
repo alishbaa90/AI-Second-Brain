@@ -22,7 +22,7 @@ export default function LoginPage() {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        setError('Signup ho gaya! Apna email check karo confirmation ke liye, ya seedha login try karo.');
+        setError('Signup done! Check your email for confirmation, or try logging in directly.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -30,7 +30,7 @@ export default function LoginPage() {
         router.refresh();
       }
     } catch (err: any) {
-      setError(err.message || 'Kuch masla hua');
+      setError(err.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
